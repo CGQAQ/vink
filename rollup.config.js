@@ -13,10 +13,10 @@ export default [
     plugins: [commonjs(), typescript(), vue()],
   },
   {
-    input: "src/vuerender.ts",
+    input: "src/runtime-vink.ts",
     output: {
       format: "cjs",
-      file: "dist/render.js",
+      file: "dist/runtime-vink.js",
     },
     plugins: [commonjs(), typescript()],
   },
