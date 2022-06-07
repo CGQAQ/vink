@@ -20,6 +20,7 @@
     "is-ci": "^2.0.0",
     "lodash": "^4.17.20",
     "patch-console": "^1.0.0",
+    "react-reconciler": "0.26.2",
     "signal-exit": "^3.0.2",
     "slice-ansi": "^3.0.0",
     "stack-utils": "^2.0.2",
@@ -28,16 +29,16 @@
     "widest-line": "^3.1.0",
     "wrap-ansi": "^6.2.0",
     "ws": "^7.5.5",
-    "yoga-layout-prebuilt": "^1.10.0",
-    "react-reconciler": "0.26.2"
+    "yoga-layout-prebuilt": "^1.10.0"
   },
   "devDependencies": {
-    "@types/react-reconciler": "0.26.2",
     "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/is-ci": "^2.0.0",
     "@types/lodash": "^4.14.161",
     "@types/node": "^17.0.18",
+    "@types/react-reconciler": "0.26.2",
     "@types/signal-exit": "^3.0.0",
     "@types/sinon": "^9.0.4",
     "@types/slice-ansi": "^4.0.0",

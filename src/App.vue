@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import Counter from './components/Counter.vue';
+import { ref, onMounted } from "vue";
+import Counter from "./components/Counter.vue";
 
-const count = ref(0)
+const count = ref(0);
 
 onMounted(() => {
-  setTimeout(() => count.value = 1, 1_000);
+  setTimeout(() => (count.value = 1), 1_000);
 });
 </script>
 
 <template>
-    <Counter :count="count" />
+  <Counter :count="count" />
 </template>
