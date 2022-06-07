@@ -1,4 +1,4 @@
-import { createApp } from "./vuerender";
+import { createApp } from "./runtime-vink";
 import App from "./App.vue";
 
 const instance = createApp(App).mount("");
