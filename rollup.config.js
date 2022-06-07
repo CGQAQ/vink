@@ -10,7 +10,8 @@ export default [
       format: "cjs",
       file: "dist/cli.js",
     },
-    plugins: [commonjs(), resolve(), typescript(), vue()],
+    external: ["vue"],
+    plugins: [vue(), commonjs(), resolve(), typescript()],
   },
   {
     input: "src/runtime-vink.ts",
@@ -18,6 +19,6 @@ export default [
       format: "cjs",
       file: "dist/runtime-vink.js",
     },
-    plugins: [commonjs(), resolve(), typescript()],
+    plugins: [typescript(), commonjs(), resolve()],
   },
 ];

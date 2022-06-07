@@ -1,13 +1,13 @@
-<script setup lang="ts">
-import { Text, View } from '.';
+<script lang="ts">
+import { defineComponent } from "vue";
 
-defineProps({
-  count: Number
-})
+export default defineComponent({
+  setup() {
+    return {};
+  },
+});
 </script>
 
 <template>
-  <View>
-    <Text style="color: blue;">{{ count }}</Text>
-  </View>
+  <div>hello</div>
 </template>
