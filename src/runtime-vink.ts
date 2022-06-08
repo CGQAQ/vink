@@ -19,6 +19,7 @@ import {
   setTextNodeValue,
   removeChildNode,
   appendChildNode,
+  setAttribute,
 } from "./dom";
 
 export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
@@ -33,7 +34,7 @@ export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
     parentSuspense?: SuspenseBoundary | null,
     unmountChildren?
   ): void {
-    throw new Error("Function not implemented.");
+    setAttribute(el, key, nextValue);
   },
   insert: function (
     el: DOMElement,

@@ -2,6 +2,7 @@ import vue from "rollup-plugin-vue";
 import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import json from "@rollup/plugin-json";
 
 export default [
   {
@@ -10,8 +11,8 @@ export default [
       format: "cjs",
       file: "dist/cli.js",
     },
-    external: ["vue"],
-    plugins: [vue(), commonjs(), resolve(), typescript()],
+    external: ["vue", "yoga-layout-prebuilt"],
+    plugins: [json(), vue(), commonjs(), resolve(), typescript()],
   },
   {
     input: "src/runtime-vink.ts",
@@ -19,6 +20,7 @@ export default [
       format: "cjs",
       file: "dist/runtime-vink.js",
     },
-    plugins: [typescript(), commonjs(), resolve()],
+    external: ["yoga-layout-prebuilt"],
+    plugins: [json(), typescript(), commonjs(), resolve()],
   },
 ];
