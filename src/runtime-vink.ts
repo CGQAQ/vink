@@ -9,6 +9,8 @@ import {
   SuspenseBoundary,
 } from "@vue/runtime-core";
 
+import Yoga from "yoga-layout-prebuilt";
+
 import {
   DOMNode,
   DOMElement,
@@ -21,6 +23,11 @@ import {
   appendChildNode,
   setAttribute,
 } from "./dom";
+
+const cleanupYogaNode = (node?: Yoga.YogaNode): void => {
+  node?.unsetMeasureFunc();
+  node?.freeRecursive();
+};
 
 export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
   patchProp: function (
@@ -46,6 +53,7 @@ export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
   remove: function (el: DOMNode): void {
     if (el.parentNode) {
       removeChildNode(el.parentNode, el);
+      cleanupYogaNode(el.yogaNode);
     }
   },
   createElement: function (
