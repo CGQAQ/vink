@@ -9,18 +9,26 @@ import {
   SuspenseBoundary,
 } from "@vue/runtime-core";
 
-const options: RendererOptions = {
+import {
+  DOMNode,
+  DOMElement,
+  createNode,
+  ElementNames,
+  createTextNode,
+  TextNode,
+  setTextNodeValue,
+  removeChildNode,
+  appendChildNode,
+} from "./dom";
+
+export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
   patchProp: function (
-    el: RendererElement,
+    el: DOMElement,
     key: string,
     prevValue: any,
     nextValue: any,
     isSVG?: boolean,
-    prevChildren?: VNode<
-      RendererNode,
-      RendererElement,
-      { [key: string]: any }
-    >[],
+    prevChildren?: VNode<DOMNode, DOMElement, { [key: string]: any }>[],
     parentComponent?: ComponentInternalInstance | null,
     parentSuspense?: SuspenseBoundary | null,
     unmountChildren?
@@ -28,41 +36,47 @@ const options: RendererOptions = {
     throw new Error("Function not implemented.");
   },
   insert: function (
-    el: RendererNode,
-    parent: RendererElement,
-    anchor?: RendererNode | null
+    el: DOMElement,
+    parent: DOMElement,
+    anchor?: DOMNode | null
   ): void {
-    throw new Error("Function not implemented.");
+    appendChildNode(parent, el);
   },
-  remove: function (el: RendererNode): void {
-    throw new Error("Function not implemented.");
+  remove: function (el: DOMNode): void {
+    if (el.parentNode) {
+      removeChildNode(el.parentNode, el);
+    }
   },
   createElement: function (
     type: string,
     isSVG?: boolean,
     isCustomizedBuiltIn?: string,
     vnodeProps?: (VNodeProps & { [key: string]: any }) | null
-  ): RendererElement {
+  ): DOMElement {
+    return createNode(type as ElementNames);
+  },
+  createText: function (text: string): DOMNode {
+    return createTextNode(text);
+  },
+  createComment: function (text: string): DOMNode {
     throw new Error("Function not implemented.");
   },
-  createText: function (text: string): RendererNode {
+  setText: function (node: TextNode, text: string): void {
+    setTextNodeValue(node, text);
+  },
+  setElementText: function (node: DOMElement, text: string): void {
     throw new Error("Function not implemented.");
   },
-  createComment: function (text: string): RendererNode {
-    throw new Error("Function not implemented.");
+  parentNode: function (node: DOMNode): DOMElement | null {
+    return node.parentNode;
   },
-  setText: function (node: RendererNode, text: string): void {
-    throw new Error("Function not implemented.");
-  },
-  setElementText: function (node: RendererElement, text: string): void {
-    throw new Error("Function not implemented.");
-  },
-  parentNode: function (node: RendererNode): RendererElement | null {
-    throw new Error("Function not implemented.");
-  },
-  nextSibling: function (node: RendererNode): RendererNode | null {
-    throw new Error("Function not implemented.");
-  },
-};
+  nextSibling: function (node: DOMNode): DOMNode | null {
+    if (!node.parentNode) return null;
 
-export const { createApp, render } = createRenderer(options);
+    const siblings = node.parentNode.childNodes;
+    const index = siblings.indexOf(node);
+    if (index < 0) return null;
+
+    return siblings[index + 1] ?? null;
+  },
+});

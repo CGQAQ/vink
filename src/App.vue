@@ -1,12 +1,4 @@
 <script lang="ts">
-// import { ref, onMounted } from "vue";
-// import Counter from "./components/Counter.vue";
-
-// const count = ref(0);
-
-// onMounted(() => {
-//   setTimeout(() => (count.value = 1), 1_000);
-// });
 import { defineComponent, ref, onMounted } from "vue";
 import Counter from "./components/Counter.vue";
 export default defineComponent({
@@ -14,7 +6,7 @@ export default defineComponent({
   setup() {
     const count = ref(0);
     onMounted(() => {
-      setTimeout(() => (count.value = 1), 1_000);
+      setTimeout(() => (count.value += 1), 1_000);
     });
     return { count };
   },
