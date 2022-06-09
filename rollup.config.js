@@ -12,7 +12,7 @@ export default [
       file: "dist/cli.js",
     },
     external: ["vue", "yoga-layout-prebuilt"],
-    plugins: [json(), vue(), commonjs(), resolve(), typescript()],
+    plugins: [json(), vue(), typescript(), commonjs(), resolve()],
   },
   {
     input: "src/runtime-vink.ts",

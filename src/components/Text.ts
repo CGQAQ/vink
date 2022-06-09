@@ -89,7 +89,7 @@ export default defineComponent({
       wrap,
     } = toRefs(props);
 
-    const children = context.slots.default;
+    const children = context.slots.default && context.slots.default();
 
     if (children === undefined || children === null) {
       return null;
@@ -140,9 +140,8 @@ export default defineComponent({
           flexDirection: "row",
           textWrap: wrap,
         },
-        internal_transform: transform,
       },
-      children
+      children.map((child) => transform(child as unknown as string))
     );
   },
 });
