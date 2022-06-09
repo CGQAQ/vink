@@ -48,6 +48,7 @@ export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
     parent: DOMElement,
     anchor?: DOMNode | null
   ): void {
+    console.log("insert", el, parent, anchor);
     appendChildNode(parent, el);
   },
   remove: function (el: DOMNode): void {
