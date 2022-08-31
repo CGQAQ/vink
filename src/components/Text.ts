@@ -55,6 +55,7 @@ export interface Props {
 }
 
 export default defineComponent({
+  name: "Text",
   props: {
     color: {
       type: String,
@@ -141,7 +142,11 @@ export default defineComponent({
           textWrap: wrap,
         },
       },
-      children.map((child) => transform(child as unknown as string))
+      children.map(
+        (child) => (
+          console.log("####", child), transform(child as unknown as string)
+        )
+      )
     );
   },
 });

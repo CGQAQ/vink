@@ -64,7 +64,9 @@ export const { createApp, render } = createRenderer<DOMNode, DOMElement>({
     vnodeProps?: (VNodeProps & { [key: string]: any }) | null
   ): DOMElement {
     console.log("createElement", type, isSVG, isCustomizedBuiltIn, vnodeProps);
-    return createNode(type as ElementNames);
+    const node = createNode(type as ElementNames);
+    node.attributes = { ...vnodeProps };
+    return node;
   },
   createText: function (text: string): DOMNode {
     console.log("createText", text);

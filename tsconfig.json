@@ -5,7 +5,8 @@
     "strict": true,
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "sourceMap": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

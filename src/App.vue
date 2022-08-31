@@ -3,7 +3,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import Counter from "./components/Counter.vue";
 import Text from "./components/Text";
 export default defineComponent({
-  components: { Counter, Text },
+  components: { Text },
   setup() {
     const count = ref(0);
     onMounted(() => {
@@ -15,6 +15,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- <Counter :count="count" /> -->
   <Text>hello world</Text>
 </template>
