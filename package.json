@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "NODE_ENV='production' vite build --watch",
-    "build": "NODE_ENV='production' vite build"
+    "build": "NODE_ENV='production' vite build",
+    "hello-world": "cd examples/hello-world && vite build && node ./dist/vink.mjs"
   },
   "main": "dist/index.js",
   "dependencies": {
