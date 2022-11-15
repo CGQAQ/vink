@@ -37,9 +37,12 @@ function renderVinkNodeToString(node: VinkNode, opts: RenderOpts) {
     let result: string[] = [];
 
     switch (node.type) {
-        case "__#VP_Root":
         case "__#VP_Comment":
-        case "__#VP_Unknown": {
+        case "__#VP_Unknown":
+            // Comment and unknown nodes are ignored
+            break;
+
+        case "__#VP_Root": {
             if (node.children.length > 0) {
                 const children = normalizeVinkNodeArray(node.children);
                 for (const child of children) {
