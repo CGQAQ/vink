@@ -8,7 +8,7 @@ import type {
 
 import { CommentNode, TextNode, VinkElement, VinkNode } from "./vink-dom";
 
-export const {render, createApp} = createRenderer<VinkNode, VinkElement>({
+export const { render, createApp } = createRenderer<VinkNode, VinkElement>({
   patchProp: function (
     el: VinkElement,
     key: string,
@@ -22,7 +22,9 @@ export const {render, createApp} = createRenderer<VinkNode, VinkElement>({
     _parentSuspense?: SuspenseBoundary | null | undefined,
     _unmountChildren?
   ): void {
-    console.log("#patchProp#", el, key, prevValue, nextValue)
+    if (RUNTIME_VERBOSE) {
+      console.log("#patchProp#", el, key, prevValue, nextValue);
+    }
     el.props[key] = nextValue;
   },
   insert: function (
@@ -30,11 +32,15 @@ export const {render, createApp} = createRenderer<VinkNode, VinkElement>({
     parent: VinkElement,
     anchor?: VinkNode | null | undefined
   ): void {
-    console.log("#insert#", el, parent, anchor)
+    if (RUNTIME_VERBOSE) {
+      console.log("#insert#", el, parent, anchor);
+    }
     parent.insert(el, anchor ?? null);
   },
   remove: function (el: VinkNode): void {
-    console.log("#remove#", el)
+    if (RUNTIME_VERBOSE) {
+      console.log("#remove#", el);
+    }
     el.parentNode?.remove(el);
   },
   createElement: function (
@@ -43,7 +49,9 @@ export const {render, createApp} = createRenderer<VinkNode, VinkElement>({
     isCustomizedBuiltIn?: string | undefined,
     vnodeProps?: (VNodeProps & { [key: string]: any }) | null | undefined
   ): VinkElement {
-    console.log("#createElement#", type, isSVG, isCustomizedBuiltIn)
+    if (RUNTIME_VERBOSE) {
+      console.log("#createElement#", type, isSVG, isCustomizedBuiltIn);
+    }
     if (isSVG) {
       throw new Error("SVG in vink is not supported");
     }
@@ -55,27 +63,39 @@ export const {render, createApp} = createRenderer<VinkNode, VinkElement>({
     return new VinkElement(type, vnodeProps);
   },
   createText: function (text: string): VinkNode {
-    console.log("#createText#", text)
+    if (RUNTIME_VERBOSE) {
+      console.log("#createText#", text);
+    }
     return new TextNode(text);
   },
   createComment: function (text: string): VinkNode {
-    console.log("#createComment#", text)
+    if (RUNTIME_VERBOSE) {
+      console.log("#createComment#", text);
+    }
     return new CommentNode(text);
   },
   setText: function (node: VinkNode, text: string): void {
-    console.log("#setText#", node, text)
+    if (RUNTIME_VERBOSE) {
+      console.log("#setText#", node, text);
+    }
     node.setContent(text);
   },
   setElementText: function (node: VinkElement, text: string): void {
-    console.log("#setElementText#", node, text)
+    if (RUNTIME_VERBOSE) {
+      console.log("#setElementText#", node, text);
+    }
     node.setContent(text);
   },
   parentNode: function (node: VinkNode): VinkElement | null {
-    console.log("#parentNode#", node)
+    if (RUNTIME_VERBOSE) {
+      console.log("#parentNode#", node);
+    }
     return node.parentNode ?? null;
   },
   nextSibling: function (node: VinkNode): VinkNode | null {
-    console.log("#nextSibling#", node)
+    if (RUNTIME_VERBOSE) {
+      console.log("#nextSibling#", node);
+    }
     return node.nextSibling();
   },
 });

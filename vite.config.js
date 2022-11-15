@@ -9,4 +9,7 @@ export default defineConfig({
       name: "vink",
     },
   },
+  define: {
+    "RUNTIME_VERBOSE": process.env.RUNTIME_VERBOSE || false,
+  }
 });
