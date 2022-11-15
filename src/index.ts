@@ -2,10 +2,10 @@ export * from "./vink-runtime";
 
 import type { Component } from "vue";
 import { renderVinkDomToScreen } from "./renderVinkDomToScreen";
-import { VinkElement } from "./vink-dom";
+import { RootElement, VinkElement } from "./vink-dom";
 import { createApp } from "./vink-runtime";
-function createRootNode() {
-    return new VinkElement("root", null);
+function createRootElement(): VinkElement {
+    return new RootElement();
 }
 
 export const DEFAULT_WIDTH = 80;
@@ -17,7 +17,7 @@ export function createVinkApp(
     rootEl: Component,
     opts?: CreateVinkAppOpts,
 ): VinkElement {
-    const root = createRootNode();
+    const root = createRootElement();
     const renderer = createApp(rootEl, {});
     renderer.mount(root);
 

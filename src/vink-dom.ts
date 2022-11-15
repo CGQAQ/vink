@@ -1,7 +1,17 @@
 import { VNodeProps } from "vue";
 import autoBind from "auto-bind";
 
-export type VinkNodeType = "Text" | "Comment" | "Unknown";
+/**
+ * VP for Vink primitive type
+ */
+const VinkNodeTypeVPPrefix = "__#VP_";
+export const VinkNodeTypes = [
+    "__#VP_Root",
+    "__#VP_Text",
+    "__#VP_Comment",
+    "__#VP_Unknown",
+] as const;
+export type VinkNodeType = typeof VinkNodeTypes[number];
 
 export type NotifyCallback = () => void;
 export interface Observable {
@@ -13,7 +23,8 @@ export interface Observable {
 
 let listeners: NotifyCallback[] = [];
 export abstract class VinkNode implements Observable {
-    type: VinkNodeType | string = "Unknown";
+    type: VinkNodeType = "__#VP_Unknown";
+    tag: string | null = null;
     parentNode?: VinkElement;
     children: VinkNode[] = [];
 
@@ -96,7 +107,14 @@ export class VinkElement extends VinkNode {
         props: (VNodeProps & { [key: string]: any }) | null | undefined,
     ) {
         super();
-        super.type = type;
+
+        if (!VinkNodeTypes.includes(type as any)) {
+            super.type = "__#VP_Unknown";
+            super.tag = type;
+        } else {
+            super.type = type as VinkNodeType;
+            super.tag = type;
+        }
 
         this.props = props ?? {};
     }
@@ -112,13 +130,19 @@ export class VinkElement extends VinkNode {
     }
 }
 
+export class RootElement extends VinkElement {
+    constructor() {
+        super("__#VP_Root", null);
+    }
+}
+
 export interface TextNodeOptions {}
 export class TextNode extends VinkNode {
     text: string;
 
     constructor(text = "", options: TextNodeOptions = {}) {
         super();
-        super.type = "Text";
+        super.type = "__#VP_Text";
 
         this.text = text;
     }
@@ -139,7 +163,7 @@ export class CommentNode extends VinkNode {
 
     constructor(comment = "") {
         super();
-        super.type = "Comment";
+        super.type = "__#VP_Comment";
 
         this.comment = comment;
     }
