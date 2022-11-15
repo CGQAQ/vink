@@ -1,12 +1,12 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "strict": true,
+        "jsx": "preserve",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "sourceMap": true
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

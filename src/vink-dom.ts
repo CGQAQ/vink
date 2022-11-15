@@ -5,151 +5,154 @@ export type VinkNodeType = "Text" | "Comment" | "Unknown";
 
 export type NotifyCallback = () => void;
 export interface Observable {
-  addListener: (cb: NotifyCallback) => void;
-  removeListener: (cb: NotifyCallback) => void;
-  clearListeners: () => void;
-  notifyAll: () => void;
+    addListener: (cb: NotifyCallback) => void;
+    removeListener: (cb: NotifyCallback) => void;
+    clearListeners: () => void;
+    notifyAll: () => void;
 }
 
 let listeners: NotifyCallback[] = [];
 export abstract class VinkNode implements Observable {
-  type: VinkNodeType | string = "Unknown";
-  parentNode?: VinkElement;
-  children: VinkNode[] = [];
+    type: VinkNodeType | string = "Unknown";
+    parentNode?: VinkElement;
+    children: VinkNode[] = [];
 
-  constructor() {
-    autoBind(this);
-  }
-
-  // ------------------- Observable -------------------
-  addListener(cb: NotifyCallback): void {
-    listeners.push(cb);
-  }
-  removeListener(cb: NotifyCallback): void {
-    const index = listeners.findIndex((it) => it === cb);
-    if (index >= 0) {
-      listeners.splice(index, 1);
-    }
-  }
-  clearListeners() {
-    listeners = [];
-  }
-  notifyAll() {
-    listeners.forEach((it) => it());
-  }
-  // -------------------    END    -------------------
-
-  insert(node: VinkNode, anchor: VinkNode | null) {
-    if (node.parentNode) {
-      node.parentNode.remove(node);
+    constructor() {
+        autoBind(this);
     }
 
-    if (anchor) {
-      const anchorIndex = this.children.findIndex((it) => it === anchor);
-      if (anchorIndex >= 0) {
-        this.children.splice(anchorIndex, 0, node);
-      } else {
-        this.children.push(node);
-      }
-    } else {
-      this.children.push(node);
+    // ------------------- Observable -------------------
+    addListener(cb: NotifyCallback): void {
+        listeners.push(cb);
+    }
+    removeListener(cb: NotifyCallback): void {
+        const index = listeners.findIndex((it) => it === cb);
+        if (index >= 0) {
+            listeners.splice(index, 1);
+        }
+    }
+    clearListeners() {
+        listeners = [];
+    }
+    notifyAll() {
+        listeners.forEach((it) => it());
+    }
+    // -------------------    END    -------------------
+
+    insert(node: VinkNode, anchor: VinkNode | null) {
+        if (node.parentNode) {
+            node.parentNode.remove(node);
+        }
+
+        if (anchor) {
+            const anchorIndex = this.children.findIndex((it) => it === anchor);
+            if (anchorIndex >= 0) {
+                this.children.splice(anchorIndex, 0, node);
+            } else {
+                this.children.push(node);
+            }
+        } else {
+            this.children.push(node);
+        }
+
+        this.notifyAll();
     }
 
-    this.notifyAll();
-  }
+    remove(node: VinkNode): void {
+        const toBeRemove = this.children.findIndex((it) => it === node);
 
-  remove(node: VinkNode): void {
-    const toBeRemove = this.children.findIndex((it) => it === node);
+        if (toBeRemove >= 0) {
+            this.children.splice(toBeRemove, 1);
+        }
 
-    if (toBeRemove >= 0) {
-      this.children.splice(toBeRemove, 1);
+        this.notifyAll();
     }
 
-    this.notifyAll();
-  }
+    nextSibling(): VinkNode | null {
+        const currentIndex = this.parentNode?.children.findIndex(
+            (it) => it === this,
+        );
 
-  nextSibling(): VinkNode | null {
-    const currentIndex = this.parentNode?.children.findIndex(
-      (it) => it === this
-    );
+        if (
+            (currentIndex && currentIndex === -1) ||
+            currentIndex === undefined
+        ) {
+            return null;
+        }
 
-    if ((currentIndex && currentIndex === -1) || currentIndex === undefined) {
-      return null;
+        return this.parentNode?.children?.[currentIndex + 1] ?? null;
     }
 
-    return this.parentNode?.children?.[currentIndex + 1] ?? null;
-  }
-
-  abstract setContent(content: string): void;
-  abstract getContent(): string;
+    abstract setContent(content: string): void;
+    abstract getContent(): string;
 }
 
 export class VinkElement extends VinkNode {
-  props: VNodeProps & { [key: string]: any };
-  content: string = "";
+    props: VNodeProps & { [key: string]: any };
+    content: string = "";
 
-  constructor(
-    type: string,
-    props: (VNodeProps & { [key: string]: any }) | null | undefined
-  ) {
-    super();
-    super.type = type;
+    constructor(
+        type: string,
+        props: (VNodeProps & { [key: string]: any }) | null | undefined,
+    ) {
+        super();
+        super.type = type;
 
-    this.props = props ?? {};
-  }
+        this.props = props ?? {};
+    }
 
-  setContent(content: string): void {
-    this.content = content;
+    setContent(content: string): void {
+        this.content = content;
 
-    super.notifyAll();
-  }
+        super.notifyAll();
+    }
 
-  getContent(): string {
-    return this.content;
-  }
+    getContent(): string {
+        return this.content;
+    }
 }
 
 export interface TextNodeOptions {}
 export class TextNode extends VinkNode {
-  text: string;
+    text: string;
 
-  constructor(text = "", options: TextNodeOptions = {}) {
-    super();
-    super.type = "Text";
+    constructor(text = "", options: TextNodeOptions = {}) {
+        super();
+        super.type = "Text";
 
-    this.text = text;
-  }
+        this.text = text;
+    }
 
-  setContent(text: string) {
-    this.text = text;
+    setContent(text: string) {
+        this.text = text;
 
-    this.notifyAll();
-  }
+        this.notifyAll();
+    }
 
-  getContent(): string {
-    return this.text;
-  }
+    getContent(): string {
+        return this.text;
+    }
 }
 
 export class CommentNode extends VinkNode {
-  comment: string;
+    comment: string;
 
-  constructor(comment = "") {
-    super();
-    super.type = "Comment";
+    constructor(comment = "") {
+        super();
+        super.type = "Comment";
 
-    this.comment = comment;
-  }
+        this.comment = comment;
+    }
 
-  setContent(comment: string) {
-    this.comment = comment;
+    setContent(comment: string) {
+        this.comment = comment;
 
-    // CommentNode is not reactive
-    // and will not trigger update
-    // this.triggerUpdate();
-  }
+        // CommentNode is not reactive
+        // and will not trigger update
+        // this.triggerUpdate();
+    }
 
-  getContent(): string {
-    return this.comment;
-  }
+    getContent(): string {
+        return this.comment;
+    }
 }

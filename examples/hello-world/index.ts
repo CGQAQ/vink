@@ -11,11 +11,11 @@ console.log("-------------------------------------------------------");
 
 const r = app.mount(root);
 console.log(
-  "------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------",
 );
 
 root.addListener(() => {
-  console.log("#current# ", root.children[0].children[0].text);
+    console.log("#current# ", root.children[0].children[0].text);
 });
 
 console.log("R", root);

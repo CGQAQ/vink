@@ -1,25 +1,25 @@
 import { VinkElement } from "./vink-dom";
 
 export type RenderOpts = {
-  width: number;
+    width: number;
 };
 export function renderVinkDomToScreen(dom: VinkElement, opts: RenderOpts) {
-  const renderResult = renderVinkDomToString(dom, opts);
-  console.clear();
-  console.log(renderResult);
+    const renderResult = renderVinkDomToString(dom, opts);
+    console.clear();
+    console.log(renderResult);
 }
 
 export function renderVinkDomToString(
-  dom: VinkElement,
-  opts: RenderOpts
+    dom: VinkElement,
+    opts: RenderOpts,
 ): string {
-  if (dom.type != "root") {
-    throw new Error("Root node must be of type 'root'");
-  }
+    if (dom.type != "root") {
+        throw new Error("Root node must be of type 'root'");
+    }
 
-  const { width } = opts;
+    const { width } = opts;
 
-  // ------------ Render logic starts here ------------
+    // ------------ Render logic starts here ------------
 
-  return "";
+    return "";
 }

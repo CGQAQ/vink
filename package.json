@@ -1,21 +1,23 @@
 {
-  "name": "vink",
-  "private": false,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "NODE_ENV='production' vite build --watch",
-    "build": "NODE_ENV='production' vite build",
-    "hello-world": "cd examples/hello-world && vite build && node ./dist/vink.mjs"
-  },
-  "main": "dist/index.js",
-  "dependencies": {
-    "auto-bind": "^5.0.1",
-    "vue": "^3.2.38",
-    "yoga-layout-prebuilt": "^1.10.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.3",
-    "typescript": "^4.8.2",
-    "vite": "^3.0.9"
-  }
+    "name": "vink",
+    "private": false,
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "NODE_ENV='production' vite build --watch",
+        "build": "NODE_ENV='production' vite build",
+        "hello-world": "cd examples/hello-world && vite build && node ./dist/vink.mjs",
+        "fmt": "prettier --write \"**/*.{js,ts,jsx,tsx,json,vue}\""
+    },
+    "main": "dist/index.js",
+    "dependencies": {
+        "auto-bind": "^5.0.1",
+        "vue": "^3.2.38",
+        "yoga-layout-prebuilt": "^1.10.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^3.0.3",
+        "prettier": "^2.7.1",
+        "typescript": "^4.8.2",
+        "vite": "^3.0.9"
+    }
 }
