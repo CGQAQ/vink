@@ -3,13 +3,15 @@ import autoBind from "auto-bind";
 
 export type VinkNodeType = "Text" | "Comment" | "Unknown";
 
-type NotifyCallback = () => void;
+export type NotifyCallback = () => void;
 export interface Observable {
   addListener: (cb: NotifyCallback) => void;
   removeListener: (cb: NotifyCallback) => void;
+  clearListeners: () => void;
   notifyAll: () => void;
 }
 
+let listeners: NotifyCallback[] = [];
 export abstract class VinkNode implements Observable {
   type: VinkNodeType | string = "Unknown";
   parentNode?: VinkElement;
@@ -19,21 +21,23 @@ export abstract class VinkNode implements Observable {
     autoBind(this);
   }
 
-  // ------------------- ReactiveTarget -------------------
-  private listeners: NotifyCallback[] = [];
+  // ------------------- Observable -------------------
   addListener(cb: NotifyCallback): void {
-    this.listeners.push(cb);
+    listeners.push(cb);
   }
   removeListener(cb: NotifyCallback): void {
-    const index = this.listeners.findIndex((it) => it === cb);
+    const index = listeners.findIndex((it) => it === cb);
     if (index >= 0) {
-      this.listeners.splice(index, 1);
+      listeners.splice(index, 1);
     }
   }
-  notifyAll() {
-    this.listeners.forEach((it) => it());
+  clearListeners() {
+    listeners = [];
   }
-  // -------------------       END      -------------------
+  notifyAll() {
+    listeners.forEach((it) => it());
+  }
+  // -------------------    END    -------------------
 
   insert(node: VinkNode, anchor: VinkNode | null) {
     if (node.parentNode) {

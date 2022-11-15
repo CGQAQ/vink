@@ -14,6 +14,8 @@ console.log(
   "------------------------------------------------------------------------------"
 );
 
-setInterval(() => {
+root.addListener(() => {
   console.log("#current# ", root.children[0].children[0].text);
-}, 1000);
+});
+
+console.log("R", root);
