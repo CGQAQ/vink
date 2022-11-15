@@ -3,7 +3,14 @@ import autoBind from "auto-bind";
 
 export type VinkNodeType = "Text" | "Comment" | "Unknown";
 
-export abstract class VinkNode {
+type NotifyCallback = () => void;
+export interface Observable {
+  addListener: (cb: NotifyCallback) => void;
+  removeListener: (cb: NotifyCallback) => void;
+  notifyAll: () => void;
+}
+
+export abstract class VinkNode implements Observable {
   type: VinkNodeType | string = "Unknown";
   parentNode?: VinkElement;
   children: VinkNode[] = [];
@@ -11,6 +18,22 @@ export abstract class VinkNode {
   constructor() {
     autoBind(this);
   }
+
+  // ------------------- ReactiveTarget -------------------
+  private listeners: NotifyCallback[] = [];
+  addListener(cb: NotifyCallback): void {
+    this.listeners.push(cb);
+  }
+  removeListener(cb: NotifyCallback): void {
+    const index = this.listeners.findIndex((it) => it === cb);
+    if (index >= 0) {
+      this.listeners.splice(index, 1);
+    }
+  }
+  notifyAll() {
+    this.listeners.forEach((it) => it());
+  }
+  // -------------------       END      -------------------
 
   insert(node: VinkNode, anchor: VinkNode | null) {
     if (node.parentNode) {
@@ -27,6 +50,8 @@ export abstract class VinkNode {
     } else {
       this.children.push(node);
     }
+
+    this.notifyAll();
   }
 
   remove(node: VinkNode): void {
@@ -35,6 +60,8 @@ export abstract class VinkNode {
     if (toBeRemove >= 0) {
       this.children.splice(toBeRemove, 1);
     }
+
+    this.notifyAll();
   }
 
   nextSibling(): VinkNode | null {
@@ -50,6 +77,7 @@ export abstract class VinkNode {
   }
 
   abstract setContent(content: string): void;
+  abstract getContent(): string;
 }
 
 export class VinkElement extends VinkNode {
@@ -68,6 +96,12 @@ export class VinkElement extends VinkNode {
 
   setContent(content: string): void {
     this.content = content;
+
+    super.notifyAll();
+  }
+
+  getContent(): string {
+    return this.content;
   }
 }
 
@@ -84,6 +118,12 @@ export class TextNode extends VinkNode {
 
   setContent(text: string) {
     this.text = text;
+
+    this.notifyAll();
+  }
+
+  getContent(): string {
+    return this.text;
   }
 }
 
@@ -99,5 +139,13 @@ export class CommentNode extends VinkNode {
 
   setContent(comment: string) {
     this.comment = comment;
+
+    // CommentNode is not reactive
+    // and will not trigger update
+    // this.triggerUpdate();
+  }
+
+  getContent(): string {
+    return this.comment;
   }
 }
