@@ -1,4 +1,5 @@
 <template>
+    <!-- Text will simply out put text -->
     <Text>{{ msg }}({{ counter }}s)</Text>
 </template>
 
