@@ -11,27 +11,39 @@ The project is based on [ink](https://github.com/vadimdemedes/ink).
 Counter.vue:
 
 ```vue
-<script setup>
-const { ref, onMounted } = require("vue")
+<template>
+    <!-- Text will simply out put text -->
+    <Text>{{ msg }}({{ counter }}s)</Text>
+</template>
 
-const count = ref(0)
+<script setup lang="ts">
+import { ref, onBeforeUnmount, onMounted } from "vue";
+import Text from "../../src/builtin/Text";
+
+const msg = ref("Hello World from vink");
+const counter = ref(0);
+
+let handle;
 onMounted(() => {
-  setTimeout(() => count.value = 1, 1_000);
+    handle = setInterval(() => {
+        counter.value++;
+    }, 1000);
+});
+
+onBeforeUnmount(() => {
+    clearInterval(handle);
 });
 </script>
 
-<template>
-  <Text>{{ count }} tests passed.</Text>
-</template>
 ```
 
 index.js:
 
 ```js
-const { createApp } = require("./vuerender");
-const Counter = require("./Counter.vue");
+import { createVinkApp } from "../../src";
+import HelloWorld from "./hello-world.vue";
 
-createApp(Counter).mount(process.stdout);
+createVinkApp(HelloWorld);
 ```
 
-<img src="assets/demo.svg" width="600">
+<img src="assets/Recording%202022-11-16%20at%2008.53.16.gif" width="600">
